@@ -1,0 +1,15 @@
+services:
+  converter:
+
+    build: .
+    
+    volumes:
+      - .:/documents
+      
+    command: >
+      asciidoctor-pdf
+      -r asciidoctor-diagram
+      -D /documents/output
+      entradas_e_saidas.adoc
+      
+    user: "${UID:-1000}:${GID:-1000}"

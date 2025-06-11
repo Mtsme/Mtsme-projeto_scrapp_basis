@@ -1,0 +1,13 @@
+[project]
+name = "recursos"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pydantic>=2.10.6",
+    "rabbitpy>=2.0.1",
+    "selenium>=4.30.0",
+    "setuptools>=76.0.0",
+    "undetected-chromedriver>=3.5.5",
+]

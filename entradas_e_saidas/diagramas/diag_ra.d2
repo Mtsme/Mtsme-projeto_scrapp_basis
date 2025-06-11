@@ -1,0 +1,102 @@
+vars: {
+  d2-config: {
+    layout-engine: dagre
+    theme-id: 100
+    sketch: true
+    center: true
+  }
+}
+
+explanation: |md
+  # RabbitMQ Exchanges e Filas
+| {near: top-center}
+
+direction: right
+
+Usuario{
+  icon: https://icons.terrastruct.com/dev%2Fjava.svg
+  style{
+    font-size : 40
+  }
+}
+
+Consumidor-admin{
+  icon: https://icons.terrastruct.com/dev%2Fjava.svg
+  style{
+    font-size : 40
+  }
+}
+
+Consumidor-chat-mattermost{
+  icon: https://icons.terrastruct.com/dev%2Fjava.svg
+  style{
+    font-size : 40
+  }
+}
+
+rabbit1: RabbitMQ {
+  icon: https://www.svgrepo.com/show/303576/rabbitmq-logo.svg
+  Exchange-pregao-info: {
+    shape: queue
+    style.fill: chocolate
+    style.font-size : 40
+  }
+  pregao-arquivos-recursos: {
+    shape: queue
+    style.fill: orange
+    style.font-size : 40
+}
+}
+recursos_anexos{
+  icon: https://icons.terrastruct.com/dev%2Fpython.svg
+  style{
+    font-size : 40
+  }
+}
+
+rabbit2: RabbitMQ {
+  icon: https://www.svgrepo.com/show/303576/rabbitmq-logo.svg
+  arquivos-recursos {
+    shape: queue
+    style.fill: chocolate
+    style.font-size : 40
+  }
+  fila1:arquivos-recursos.admin {
+    shape: queue
+    style.fill: orange
+    style.font-size : 40
+}
+  fila2:arquivos-recursos.chat-mattermost {
+    shape: queue
+    style.fill: orange
+    style.font-size : 40
+}
+}
+Usuario -> rabbit1.Exchange-pregao-info: {
+  style.animated: true
+  style.stroke: red
+}
+
+rabbit1.Exchange-pregao-info -> rabbit1.pregao-arquivos-recursos
+
+rabbit1.pregao-arquivos-recursos -> recursos_anexos: {
+  style.animated: true
+  style.stroke: blue
+}
+
+recursos_anexos -> rabbit2.arquivos-recursos: {
+  style.animated: true
+  style.stroke: red
+}
+rabbit2.arquivos-recursos -> rabbit2.fila1
+rabbit2.arquivos-recursos -> rabbit2.fila2
+
+
+rabbit2.fila1 -> Consumidor-admin : {
+  style.animated: true
+  style.stroke: blue
+}
+rabbit2.fila2 -> Consumidor-chat-mattermost : {
+  style.animated: true
+  style.stroke: blue
+}

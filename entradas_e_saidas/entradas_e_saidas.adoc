@@ -1,0 +1,372 @@
+= LISTAGEM DE ENTRADAS E SAÍDAS RABBITMQ COM DIAGRAMAS DE FLUXO E EXEMPLOS jSON DAS FILAS DE SAÍDA
+:doctype: article
+:source-highlighter: rouge
+:pygments-style: manni
+:toc: auto
+
+== main.py (Código principal que executa cada módulo selecionado)
+
+.Lista das exchanges de saída (módulos de execução main)
+[source,json]
+----
+[
+  "arquivos_compra",
+  "arquivos_proposta",
+  "dados_propostas",
+  "status_licitante",
+  "quadro_informativo",
+  "arquivo_recursos",
+  "recursos-dados-gerais",
+  "decisoes_revisoes",
+  "informacoes_pregao",
+  "mensagem_dlq"
+]
+----
+
+== comum(configurações e referências globais)
+* Seção para configurações globais.
+
+== Downloas-compra (anexos gerais de compra do pregao)
+
+* Entrada de dados na fila "downloads-compra"
+* Saída de dados pela exchange "arquivos_compra" e filas
+* Upload de anexos para o minio
+
+[.center]
+.Fluxo de Processo
+d2::diagramas/diag_dc.d2[svg, pdfwidth="110%", opts="--sketch"]
+
+.Exemplo de JSON na fila de saída
+[source,json]
+----
+{
+  "dados_pregao": {
+    "codigo_uasg": "114702",
+    "apelido": "ENAP 90001/2025",
+    "id_pregao": 13203,
+    "codigo_prg": "11470205900012025",
+    "numero_licitacao": "900012025",
+    "id_sistema": 3,
+    "acompanhar": true
+  },
+  "local_anexos": [
+    "licitacao/11470205900012025/anexos.gerais/relatorio-termo-aceite-11470205900012025-pregao_20250523_132626.pdf",
+    "licitacao/11470205900012025/anexos.gerais/1147020590001202501_20250523_132626.zip"
+  ],
+  "ultima_verificacao_em": "2025-05-23 13:26:28.069259"
+}
+----
+
+== info_pregao (informações sobre fase de contratação do pregao)
+
+* Entrada de dados na fila "pregao-info-gerais"
+* Saída de dados pela exchange "informacoes_pregao" e filas
+
+NOTE: Criar consumer no mensagens pregão.
+
+[.center]
+.Fluxo de Processo
+d2::diagramas/diag_ip.d2[svg, pdfwidth="110%", opts="--sketch"]
+
+.Exemplo de JSON na fila de saída
+[source, json]
+----
+{
+  "dados_pregao": {
+    "codigo_uasg": "114702",
+    "apelido": "ENAP 90001/2025",
+    "id_pregao": 13203,
+    "codigo_prg": "11470205900012025",
+    "numero_licitacao": "900012025",
+    "id_sistema": 3,
+    "acompanhar": true
+  },
+  "fase_contratacao": "Contratação na etapa de seleção de fornecedores",
+  "cod_pregao": "11470205900012025",
+  "ultima_verificacao_em": "2025-05-14T14:39:29.852812"
+}
+----
+
+== propostas (informações e anexos de propostas)
+
+=== Anexos
+* Entrada de dados na fila "pregao-anexos-propostas"
+* Saída de dados pela exchange "arquivos_proposta" e filas
+* Upload de anexos para o minio
+
+[.center]
+.Fluxo de Processo
+d2::diagramas/diag_pa.d2[svg, pdfwidth="110%", opts="--sketch"]
+
+.Exemplo de JSON na fila de saída
+[source, json]
+----
+{
+  "dados_pregao": {
+    "codigo_uasg": "114702",
+    "apelido": "ENAP 90001/2025",
+    "id_pregao": 13203,
+    "codigo_prg": "11470205900012025",
+    "numero_licitacao": "900012025",
+    "id_sistema": 3,
+    "acompanhar": true
+  },
+  "grupo": "1",
+  "cnpj": "25.912.503/0001-64",
+  "ultimos_arquivos": [
+    {
+      "cnpj": "25.912.503/0001-64",
+      "nome": "Proposta_e_Planilha_de_Custos.rar",
+      "data": "04_02_2025_10_56_06",
+      "anexo_minio_url": "licitacao/11470205900012025/propostas/cnpj-25.912.503_0001-64_proposta_e_planilha_de_custos.rar_data_04_02_2025_10_56_06_20250523_145148.rar"
+    },
+    {
+      "cnpj": "25.912.503/0001-64",
+      "nome": "Planilha_-_Custos_-_Profissionais_-_Integrado_-_SIMPLES_-_Atualizada_assinado.pdf",
+      "data": "05_02_2025_12_12_26",
+      "anexo_minio_url": "licitacao/11470205900012025/propostas/cnpj-25.912.503_0001-64_planilha_-_custos_-_profissionais_-_integrado_-_simples_-_atualizada_assinado.pdf_data_05_02_2025_12_12_26_20250523_145152.pdf"
+    },
+    {
+      "cnpj": "25.912.503/0001-64",
+      "nome": "Resposta_chat_assinado.pdf",
+      "data": "05_02_2025_12_12_45",
+      "anexo_minio_url": "licitacao/11470205900012025/propostas/cnpj-25.912.503_0001-64_resposta_chat_assinado.pdf_data_05_02_2025_12_12_45_20250523_145154.pdf"
+    }
+  ],
+  "ultima_verificacao_em": "2025-05-23 14:51:54.749616"
+}
+----
+
+=== Dados Gerais (dados gerais das propostas)
+* Entrada de dados na fila "pregao-dados-propostas"
+* Saída de dados pela exchange "dados_propostas" e filas
+
+NOTE: Criar consumer no mensagens pregão.
+
+[.center]
+.Fluxo de Processo
+d2::diagramas/diag_pd.d2[svg, pdfwidth="110%", opts="--sketch"]
+
+.Exemplo de JSON na fila de saída
+[source, json]
+----
+{
+  "dados_pregao": {
+    "codigo_uasg": "114702",
+    "apelido": "ENAP 90001/2025",
+    "id_pregao": 13203,
+    "codigo_prg": "11470205900012025",
+    "numero_licitacao": "900012025",
+    "id_sistema": 3,
+    "acompanhar": true
+  },
+  "grupo": "GRUPO 1",
+  "cnpj": "02.781.209/0001-65",
+  "tipo": null,
+  "status": "Aceita e habilitada",
+  "motivo": null,
+  "nome": "COOPERSYSTEM - COOPERATIVA DE TRABALHO",
+  "uf": "DF",
+  "valor_ofertado": "4776120.8800",
+  "valor_negociado_antigo": "sem valores",
+  "valor_negociado_atual": "4776120.3600",
+  "propostas": [
+    {
+      "item": "1 IMPLEMENTAÇÃO ÁGIL DE SOFTWARE",
+      "valor_ofertado_unit": "255000.0000",
+      "valor_negociado_unit": null
+    },
+    {
+      "item": "2 IMPLEMENTAÇÃO ÁGIL DE SOFTWARE",
+      "valor_ofertado_unit": "223887.9600",
+      "valor_negociado_unit": null
+    },
+    {
+      "item": "3 IMPLEMENTAÇÃO ÁGIL DE SOFTWARE",
+      "valor_ofertado_unit": "196901.5000",
+      "valor_negociado_unit": "196901.4000"
+    }
+  ],
+  "ultima_verificacao_em": "2025-05-23T14:55:54.133289"
+}
+----
+
+=== Status Licitante (informações sobre os status das empresas em relação as propostas)
+* Entrada de dados na fila "pregao-status-licitante"
+* Saída de dados pela exchange "status_licitante" e filas
+
+NOTE: Criar consumer no mensagens pregão.
+
+[.center]
+.Fluxo de Processo
+d2::diagramas/diag_ps.d2[svg, pdfwidth="110%", opts="--sketch"]
+
+.Exemplo de JSON na fila de saída
+[source, json]
+----
+{
+  "dados_pregao": {
+    "codigo_uasg": "114702",
+    "apelido": "ENAP 90001/2025",
+    "id_pregao": 13203,
+    "codigo_prg": "11470205900012025",
+    "numero_licitacao": "900012025",
+    "id_sistema": 3,
+    "acompanhar": true
+  },
+  "grupo": "1",
+  "cnpj": "08.818.090/0001-34",
+  "status_antigo": null,
+  "status_novo": "Desclassificada",
+  "motivo": "Licitante não enviou planilha de formação de custos solicitada, descumprindo os subitens 6.20.5 e 6.20.6!",
+  "ultima_verificacao_em": "2025-05-23T14:58:17.474617"
+}
+----
+
+== quadro_informativo (informações dos tipos (A,I,E) do pregão)
+
+* Entrada de dados na fila "pregao-quadro-informativo"
+* Saída de dados pela exchange "quadro.informativo" e filas
+
+Tipos:
+* A - AVISO
+* I - IMPUGNACAO
+* E - ESCLARECIMENTO
+
+NOTE: Criar consumer no _mensagens_pregao_.
+
+[.center]
+.Fluxo de Processo
+d2::diagramas/diag_qi.d2[svg, pdfwidth="110%", opts="--sketch"]
+
+.Exemplo de JSON na fila de saída
+[source, json]
+----
+{
+  "dados_pregao": {
+    "codigo_uasg": "114702",
+    "apelido": "ENAP 90001/2025",
+    "id_pregao": 13203,
+    "codigo_prg": "11470205900012025",
+    "numero_licitacao": "900012025",
+    "id_sistema": 3,
+    "acompanhar": true
+  },
+  "tipo": "ESCLARECIMENTO",
+  "registro": {
+    "questionamento": "Para:\nuf61a\nEnap - Licitação\n\nQui, 30/01/2025 12:56\nue9a3\nVocê encaminhou esta mensagem em Qui, 30/01/2025 17:13\nPrezados,\nEm relação ao pregão nº 90.001/2025, observamos que o edital faz referência à Portaria SGD/MGI nº 750, de 20 de março de 2023, para a composição dos preços dos serviços a serem contratados. Considerando que nossa empresa adota a Convenção Coletiva de Trabalho firmada pelo Sindicato dos Trabalhadores em Tecnologia da Informação de São Paulo (SINDPD-SP), solicitamos esclarecimento quanto à possibilidade de utilizarmos os valores referenciais estabelecidos nessa convenção coletiva na elaboração de nossa proposta.\nDestacamos que o Tribunal de Contas da União (TCU), por meio do Acórdão nº 1.097/2019-Plenário, entende que a administração pública não deve impor, nos editais de licitação, a convenção coletiva de trabalho a ser adotada pelas empresas licitantes, visando preservar a competitividade e a isonomia do certame.\nAguardamos o esclarecimento para que possamos proceder com a elaboração de nossa proposta em conformidade com as diretrizes estabelecidas.\nAtenciosamente,\n\npaulo@imperium.info",
+    "resposta": "Enap - Licitação\n\npaulo@imperium.info\n\nPrezados, boa tarde\n\nApesar de intempestivo o seu pedido de esclarecimento, segue abaixo a resposta:\n\nFavor atender os dispositivos do Edital, inclusive os itens 9.7 a 9.22, do Termo de Referência.\n\nAtt.,\n\nBreno Aurélio de Paulo\nPregoeiro\nEnap"
+  },
+  "ultima_verificacao_em": "2025-05-23 15:01:17.089649"
+}
+----
+
+== recursos (informações e anexos sobre recursos e contrarrazões)
+
+=== Anexos (anexos de recursos e contrarrazões)
+* Entrada de dados na fila "pregao-arquivos-recursos"
+* Saída de dados pela exchange "arquivos_recursos" e filas
+* Upload de anexos para o minio
+
+NOTE: Criar consumer no mensagens pregão.
+
+[.center]
+.Fluxo de Processo
+d2::diagramas/diag_ra.d2[svg, pdfwidth="110%", opts="--sketch"]
+
+.Exemplo de JSON na fila de saída
+[source, json]
+----
+{
+  "dados_pregao": {
+    "codigo_uasg": "114702",
+    "apelido": "ENAP 90001/2025",
+    "id_pregao": 13203,
+    "codigo_prg": "11470205900012025",
+    "numero_licitacao": "900012025",
+    "id_sistema": 3,
+    "acompanhar": true
+  },
+  "grupo": "1",
+  "cnpj": "02.781.209_0001-65",
+  "ultimo_arquivo": "licitacao/11470205900012025/recursos/cnpj-02.781.209_0001-65recurso.pdf",
+  "ultima_verificacao_em": "2025-05-23 15:08:28.963573"
+}
+----
+
+=== Dados Gerais (informações sobre recursos e contrarrazões)
+* Entrada de dados na fila "pregao-recursos-dados-gerais"
+* Saída de dados pela exchange "recursos" e filas
+
+NOTE: Criar consumer no mensagens pregão.
+
+[.center]
+.Fluxo de Processo
+d2::diagramas/diag_rd.d2[svg, pdfwidth="110%", opts="--sketch"]
+
+.Exemplo de JSON na fila de saída
+[source, json]
+----
+{
+  "dados_pregao": {
+    "codigo_uasg": "114702",
+    "apelido": "ENAP 90001/2025",
+    "id_pregao": 13203,
+    "codigo_prg": "11470205900012025",
+    "numero_licitacao": "900012025",
+    "id_sistema": 3,
+    "acompanhar": true
+  },
+  "grupo": 1,
+  "secao": 1,
+  "cnpj": "02.781.209/0001-65",
+  "dados": {
+    "cod_pregao": "11470205900012025",
+    "secao": 1,
+    "cnpj": "02.781.209/0001-65",
+    "nome": "COOPERSYSTEM - COOPERATIVA DE TRABALHO",
+    "status": "Recurso: cadastrado",
+    "arquivorecurso": null,
+    "intencaorecurso": null,
+    "contrarrazoes": []
+  },
+  "ultima_verificacao_em": "2025-05-23T15:13:47.072150"
+}
+----
+
+== Decisão e Revisão (informações sobre decisão do pregoeiro e revisão de autoridades)
+
+* Entrada de dados na fila "pregao-decisoes-revisoes"
+* Saída de dados pela exchange "decisoes_revisoes" e filas
+
+NOTE: Criar consumer no mensagens pregão.
+
+[.center]
+.Fluxo de Processo
+d2::diagramas/diag_rdr.d2[svg, pdfwidth="110%", opts="--sketch"]
+
+.Exemplo de JSON na fila de saída
+[source, json]
+----
+{
+  "dados_pregao": {
+    "codigo_uasg": "114702",
+    "apelido": "ENAP 90001/2025",
+    "id_pregao": 13203,
+    "codigo_prg": "11470205900012025",
+    "numero_licitacao": "900012025",
+    "id_sistema": 3,
+    "acompanhar": true
+  },
+  "grupo": "GRUPO 1",
+  "secao": "1",
+  "tipo": "DECISAO",
+  "dados": {
+    "nome": "NOME",
+    "decisao": "não procede",
+    "data_decisao": "11/04/2025 21:37",
+    "fundamentacao": "DECISÃO DE RECURSO 01 Processo SEI nº 04600.000441/2024-89... (texto completo >1k caracteres)"
+  },
+  "ultima_verificacao_em": "2025-05-23T15:16:21.175484"
+}
+----

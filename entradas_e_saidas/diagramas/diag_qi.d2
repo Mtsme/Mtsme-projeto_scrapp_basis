@@ -1,0 +1,103 @@
+vars: {
+  d2-config: {
+    layout-engine: dagre
+    theme-id: 100
+    sketch: true
+    center: true
+  }
+}
+
+explanation: |md
+  # RabbitMQ Exchanges e Filas
+| {near: top-center}
+
+direction: right
+
+Usuario{
+  icon: https://icons.terrastruct.com/dev%2Fjava.svg
+  style{
+    font-size : 40
+  }
+}
+
+Consumidor-admin{
+  icon: https://icons.terrastruct.com/dev%2Fjava.svg
+  style{
+    font-size : 40
+  }
+}
+
+Consumidor-chat-mattermost{
+  icon: https://icons.terrastruct.com/dev%2Fjava.svg
+  style{
+    font-size : 40
+  }
+}
+
+rabbit1: RabbitMQ {
+  icon: https://www.svgrepo.com/show/303576/rabbitmq-logo.svg
+  pregao-info: {
+    shape: queue
+    style.fill: chocolate
+    style.font-size : 40
+  
+  }
+  pregao-info-gerais: {
+    shape: queue
+    style.fill: orange
+    style.font-size : 40
+  }
+}
+quadro-informativo{
+  icon: https://icons.terrastruct.com/dev%2Fpython.svg
+  style{
+    font-size : 40
+  }
+}
+
+rabbit2: RabbitMQ {
+  icon: https://www.svgrepo.com/show/303576/rabbitmq-logo.svg
+  informacoes-pregao:quadro-informativo {
+    shape: queue
+    style.fill: chocolate
+    style.font-size : 40
+  }
+  informacoes-pregao-admin:quadro-informativo.admin {
+    shape: queue
+    style.fill: orange
+    style.font-size : 40
+}
+  informacoes-pregao-chat-mattermost:quadro-informativo.chat-mattermost {
+    shape: queue
+    style.fill: orange
+    style.font-size : 40
+}
+}
+Usuario -> rabbit1.pregao-info: {
+  style.animated: true
+  style.stroke: red
+}
+
+rabbit1.pregao-info -> rabbit1.pregao-info-gerais
+
+rabbit1.pregao-info-gerais -> quadro-informativo: {
+  style.animated: true
+  style.stroke: blue
+}
+
+quadro-informativo -> rabbit2.informacoes-pregao: {
+  style.animated: true
+  style.stroke: red
+}
+rabbit2.informacoes-pregao -> rabbit2.informacoes-pregao-chat-mattermost
+rabbit2.informacoes-pregao -> rabbit2.informacoes-pregao-admin
+
+
+rabbit2.informacoes-pregao-admin -> Consumidor-admin : {
+  style.animated: true
+  style.stroke: blue
+}
+rabbit2.informacoes-pregao-chat-mattermost -> Consumidor-chat-mattermost : {
+  style.animated: true
+  style.stroke: blue
+}

@@ -1,0 +1,5 @@
+[project]
+name = "novocomprasnet-mensagens-crawler"
+version = "1.0.0"
+description = "Faz a varredura das mensagens de sessão pública no novo ComprasNet"
+requires-python = ">=3.11"

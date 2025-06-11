@@ -1,0 +1,6 @@
+db:
+  max_connections: 5
+rabbit:
+  prefetch_count: 1
+default_log_level: DEBUG
+instance_name: secondary

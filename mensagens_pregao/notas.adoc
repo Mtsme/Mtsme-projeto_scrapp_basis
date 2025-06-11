@@ -1,0 +1,178 @@
+= Notas
+:toc:
+
+== Formato do código do pregão
+
+Código Uasg (6 chars) + Modalidade (2 chars) + Número Pregão (5 chars) + Ano (4 chars)
+
+* Código Uasg: 201057
+* Modalidade: 5
+* Número Pregão: 7
+* Ano: 2023
+
+cod_prg=20105705000072023
+
+== Mensagens de pregão
+
+Exemplo de mensagem com dados do pregão:
+
+[source,json]
+----
+{
+    "codigo_uasg": "201057",
+    "numero_licitacao": "000072023",
+    "tipo_pregao": "E",
+    "uuid_processo": "449e5453da2241599d3fba3a58ea3b03",
+    "id_pregao": 13174,
+    "codigo_prg": "20105705000072023",
+    "apelido": "MGI 7/2023 (SRP)",
+    "sigla_sistema": "comprasnovo"
+}
+----
+
+Exemplo 2:
+
+[source,json]
+----
+{
+    "codigo_uasg": "110245",
+    "apelido": "FUNDO DE IMPRENSA NACIONAL 90001/2024",
+    "id_pregao": 13176,
+    "codigo_prg": "11024505900012024",
+    "numero_licitacao": "900012024",
+    "id_sistema": 3,
+    "acompanhar": true
+}
+----
+
+Inserir registro na tabela de histórico:
+
+[source,sql]
+----
+insert into historico_mensagem (codigo_prg, remetente, data_hora_mensagem) values ('20105705000072023', 'Mensagem do Pregoeiro',  '2024-05-17 14:33:24');
+----
+
+== Paginador de itens/grupos:
+
+Selector CSS do paginador de mensagens:
+  `app-mensagens-da-compra p-dataview p-paginator`
+
+Botão Next Page: `app-mensagens-da-compra p-dataview p-paginator button[aria-label='Next Page']`
+
+[source,javascript]
+----
+document.querySelector("app-mensagens-da-compra p-dataview p-paginator button[aria-label='Next Page']").click()
+----
+
+[source,html]
+----
+<div class="dv-mensagens-disputa">
+<a class="ui-paginator-next ui-paginator-element ui-state-default ui-corner-all" tabindex="0"><span class="ui-paginator-icon pi pi-caret-right"></span></a>
+</div
+----
+
+== Estrutura de mensagens de pregão
+
+
+tipoRemetente:
+
+* 3 = Pregoeiro
+* 1 = Mensagem do Participante
+
+----
+div.p-dataview-content
+  div.cp-mensagens-compra -> x5: método recebendo o elemento
+    div.cabecalho-mensagem
+      div.mensagens-remetente: Mensagem do Pregoeiro
+      div.mensagens-item: Item G12
+    div.mensagens-texto: A sessão está...
+    div.mensagens-data: Enviada em 19/03/2024 às 16:09:01h
+----
+
+[source,html]
+----
+<div class="p-dataview-content">
+    <div _ngcontent-ng-c2548653704="" class="width-100 p-grid cp-mensagens-compra mb-0 pt-0 pb-0 ng-star-inserted"
+        style="">
+        <div _ngcontent-ng-c2548653704="" class="cabecalho-mensagem">
+            <div _ngcontent-ng-c2548653704="" class="mensagens-remetente pb-1"> Mensagem do Pregoeiro </div><!---->
+        </div>
+        <div _ngcontent-ng-c2548653704="" translate="no" class="mensagens-texto text-break notranslate"> A sessão está
+            suspensa e será retomada quinta-feira, 21 de março de 2024, às 14h30. Por favor, estejam conectados!
+            Desejamos a todos uma boa tarde! </div>
+        <div _ngcontent-ng-c2548653704="" class="mensagens-data text-right"><small _ngcontent-ng-c2548653704="">Enviada
+                em 19/03/2024 às 16:09:01h</small></div>
+    </div>
+    <div _ngcontent-ng-c2548653704="" class="width-100 p-grid cp-mensagens-compra mb-0 pt-0 pb-0 ng-star-inserted"
+        style="">
+        <div _ngcontent-ng-c2548653704="" class="cabecalho-mensagem">
+            <div _ngcontent-ng-c2548653704="" class="mensagens-remetente pb-1"> Mensagem do Pregoeiro </div>
+            <div _ngcontent-ng-c2548653704="" translate="no" class="mensagens-item notranslate ng-star-inserted"> Item
+                G12 </div><!---->
+        </div>
+        <div _ngcontent-ng-c2548653704="" translate="no" class="mensagens-texto text-break notranslate"> Para
+            04.947.601/0001-67 - Entendido. </div>
+        <div _ngcontent-ng-c2548653704="" class="mensagens-data text-right"><small _ngcontent-ng-c2548653704="">Enviada
+                em 19/03/2024 às 16:08:45h</small></div>
+    </div>
+    <div _ngcontent-ng-c2548653704="" class="width-100 p-grid cp-mensagens-compra mb-0 pt-0 pb-0 ng-star-inserted"
+        style="">
+        <div _ngcontent-ng-c2548653704="" class="cabecalho-mensagem">
+            <div _ngcontent-ng-c2548653704="" class="mensagens-remetente pb-1"> Mensagem do Participante </div>
+            <div _ngcontent-ng-c2548653704="" translate="no" class="mensagens-item notranslate ng-star-inserted"> Item
+                G12 </div><!---->
+        </div>
+        <div _ngcontent-ng-c2548653704="" translate="no" class="mensagens-texto text-break notranslate"> De
+            04.947.601/0001-67 - Prezado Pregoeiro, foi enviado a Proposta e Planilha de Custos e Formação de Preços.
+        </div>
+        <div _ngcontent-ng-c2548653704="" class="mensagens-data text-right"><small _ngcontent-ng-c2548653704="">Enviada
+                em 19/03/2024 às 15:56:05h</small></div>
+    </div>
+    <div _ngcontent-ng-c2548653704="" class="width-100 p-grid cp-mensagens-compra mb-0 pt-0 pb-0 ng-star-inserted"
+        style="">
+        <div _ngcontent-ng-c2548653704="" class="cabecalho-mensagem">
+            <div _ngcontent-ng-c2548653704="" class="mensagens-remetente pb-1"> Mensagem do Participante </div>
+            <div _ngcontent-ng-c2548653704="" translate="no" class="mensagens-item notranslate ng-star-inserted"> Item
+                G12 </div><!---->
+        </div>
+        <div _ngcontent-ng-c2548653704="" translate="no" class="mensagens-texto text-break notranslate"> De
+            04.947.601/0001-67 - O item G12 teve a convocação para envio de anexos encerrada às 15:54:51 de 19/03/2024.
+            1 anexo foi enviado pelo fornecedor RESOURCE TECNOLOGIA E INFORMATICA LTDA., CNPJ 04.947.601/0001-67. </div>
+        <div _ngcontent-ng-c2548653704="" class="mensagens-data text-right"><small _ngcontent-ng-c2548653704="">Enviada
+                em 19/03/2024 às 15:54:51h</small></div>
+    </div>
+    <div _ngcontent-ng-c2548653704="" class="width-100 p-grid cp-mensagens-compra mb-0 pt-0 pb-0 ng-star-inserted"
+        style="">
+        <div _ngcontent-ng-c2548653704="" class="cabecalho-mensagem">
+            <div _ngcontent-ng-c2548653704="" class="mensagens-remetente pb-1"> Mensagem do Participante </div>
+            <div _ngcontent-ng-c2548653704="" translate="no" class="mensagens-item notranslate ng-star-inserted"> Item
+                G12 </div><!---->
+        </div>
+        <div _ngcontent-ng-c2548653704="" translate="no" class="mensagens-texto text-break notranslate"> De
+            04.947.601/0001-67 - Prezado Pregoeiro, o campo não está habilitado para o envio da proposta. </div>
+        <div _ngcontent-ng-c2548653704="" class="mensagens-data text-right"><small _ngcontent-ng-c2548653704="">Enviada
+                em 19/03/2024 às 15:52:03h</small></div>
+    </div><!----><!----><!---->
+</div>
+----
+
+== Cabeçalho do pregão
+
+Tag cabeçalho: `app-cabecalho-compra`
+
+Seletor execução pregão `app-cabecalho-compra .d-inline` 2 itens (pegar valor por regex):
+
+* Critério julgamento:
+* Modo disputa:
+
+Seletor de status: `app-cabecalho-compra .col.campo-texto`
+
+== Itens e grupos
+
+Tag: `app-card-item`
+
+Seletor ícone de grupo: `app-card-item .fas.fa-clipboard-list`
+
+Seletor texto grupo: `app-card-item .cp-item-bold`
+
+Seletor número de itens: `app-card-item .text`

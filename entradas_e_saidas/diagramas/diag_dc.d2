@@ -1,0 +1,101 @@
+vars: {
+  d2-config: {
+    layout-engine: dagre
+    theme-id: 100
+    sketch: true
+    center: true
+  }
+}
+
+explanation: |md
+  # RabbitMQ Exchanges e Filas
+| {near: top-center}
+
+direction: right
+
+Consumidor{
+  icon: https://icons.terrastruct.com/dev%2Fjava.svg
+  style{
+    font-size : 40
+  }
+}
+
+Consumidor-admin{
+  icon: https://icons.terrastruct.com/dev%2Fjava.svg
+  style{
+    font-size : 40
+  }
+}
+Consumidor-mattermost{
+  icon: https://icons.terrastruct.com/dev%2Fjava.svg
+  style{
+    font-size : 40
+  }
+}
+
+rabbit1: RabbitMQ {
+  icon: https://www.svgrepo.com/show/303576/rabbitmq-logo.svg
+  pregao-info: {
+    style.font-size: 40
+    shape: queue
+    style.fill: chocolate
+  }
+  downloads-compra: {
+    shape: queue
+    style.fill: orange
+    style.font-size: 40
+}
+}
+Downloads-compra{
+  icon: https://icons.terrastruct.com/dev%2Fpython.svg
+  style{
+    font-size : 40
+  }
+}
+
+rabbit2: RabbitMQ {
+  icon: https://www.svgrepo.com/show/303576/rabbitmq-logo.svg
+  arquivos-compra: {
+    shape: queue
+    style.fill: chocolate
+    style.font-size: 40
+  }
+  arquivos-compra-admin:arquivos-compra.admin {
+    shape: queue
+    style.fill: orange
+    style.font-size: 40
+}
+  arquivos-compra-mattermost:arquivos-compra.chat-mattermost {
+    shape: queue
+    style.fill: orange
+    style.font-size: 40
+}
+}
+Consumidor -> rabbit1.pregao-info: {
+  style.animated: true
+  style.stroke: red
+}
+
+rabbit1.pregao-info -> rabbit1.downloads-compra
+
+rabbit1.downloads-compra -> Downloads-compra: {
+  style.animated: true
+  style.stroke: blue
+}
+
+Downloads-compra -> rabbit2.arquivos-compra: {
+  style.animated: true
+  style.stroke: red
+}
+rabbit2.arquivos-compra -> rabbit2.arquivos-compra-admin
+rabbit2.arquivos-compra -> rabbit2.arquivos-compra-mattermost
+
+
+rabbit2.arquivos-compra-admin -> Consumidor-admin : {
+  style.animated: true
+  style.stroke: blue
+}
+rabbit2.arquivos-compra-mattermost -> Consumidor-mattermost : {
+  style.animated: true
+  style.stroke: blue
+}

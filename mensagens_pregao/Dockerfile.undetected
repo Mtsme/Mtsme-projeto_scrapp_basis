@@ -1,0 +1,3 @@
+FROM ultrafunk/undetected-chromedriver:3.20-chrome108
+RUN pip install selenium-wire==5.1.0
+RUN pip install pyvirtualdisplay==3.0

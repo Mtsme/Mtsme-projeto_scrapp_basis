@@ -1,0 +1,35 @@
+= Itens de Scrapping
+
+== Quadro Informativo
+
+=== Avisos
+
+=== Impugnações
+
+=== Esclarecimento
+
+Cod Pregão | Tipo (A,I e E) | Data/Hora
+
+
+== Informações gerais do Pregão
+
+Cod Pregão | Fase Contratação
+
+== Recursos
+
+Cod Pregão | Núm Sessão | CNPJ | JSON
+
+=== Dados dos recursos
+
+=== Anexos dos recursos
+
+=== Decisões/Revisão
+
+Cod Pregão | Núm Sessão | Tipo (D,R)
+
+== Propostas
+
+=== Classificação/Dados da proposta
+
+=== Anexos das propostas
+

@@ -1,0 +1,12 @@
+= Scrapers Comprasnet
+
+== Gerar o pdf das entradas saídas
+
+Executar o seguinte comando:
+
+[source, shell]
+----
+USER=$(id -u) GROUP=$(id -g) docker compose -f compose-asciidoctor.yaml run --rm asciidoc
+----
+
+

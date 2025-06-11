@@ -1,0 +1,16 @@
+[project]
+name = "scraper-modular"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pydantic>=2.10.6",
+    "rabbitpy>=2.0.1",
+    "retry>=0.9.2",
+    "selenium>=4.29.0",
+    "setuptools>=76.0.0",
+    "tenacity>=9.1.2",
+    "undetected-chromedriver>=3.5.5",
+    "webdriver-manager>=4.0.2",
+]
